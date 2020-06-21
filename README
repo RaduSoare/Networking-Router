@@ -1,0 +1,35 @@
+
+Soare Radu-Georgian
+323CD
+Tema1 - PC
+
+
+	
+I. Routerul verifica daca pachetul este de tip IP sau tip ARP
+	1. Daca pachetul este de tip ARP, se verifica daca este un request sau un reply
+		- Daca s-a primit un request, inseamna ca un host are nevoie sa trimita un pachet si
+		are nevoie de adresa MAC a routerului. Atunci se creeaza un arp reply cu adresa MAC
+		a routerului si este transmis hostului care a trimis requestul.
+		- Daca s-a primit un reply, inseamna ca in urma unui request facut de router, un
+		host si-a trimis adresa MAC. Odata ce routerul cunoaste aceasta adresa, updateaza
+		tabela ARP
+	2. Daca pachetul este de tip IP
+		- Se calculeza cea mai buna ruta spre adresa IP destinatie: am ales sa sortez tabela
+		crescator dupa prefix si descrescator dupa masca, apoi am folosit o cautare binara
+		pentru ca gasi next_hop-ul in tabela de routare. Modificarea cautarii binare a constat
+		in alegerea primului index dintr-o serie de elemente duplicate, deoarece acela
+		facea match pe prefix si avea si masca cea mai mare
+		- Odata ce adresa next_hop-ului este cunoscuta, se verifica daca exista o intrare in
+		tabela ARP pentru acea adresa
+		- daca exista, se face forward pachetului catre aceasca, iar procesul este finalizat
+		- daca nu exista creez un pachet arp de tip request pentru a cere hostului destinatie
+		adresa sa MAC
+II. ICMP protocol
+	1. Daca se primeste un pachet ICMP pe adresa routerului se trimite inapoi un ICMP reply pe 
+	aceeasi ruta pe care a venit pachetul
+	2. Daca se primeste un pachet ICMP pe adresa routerului, dar routerul nu stie unde sa-l
+	trimita mai departe (nu gaseste next-hop in tabela de routare), se trimite un pachet
+	de Host Unreachable
+	3. Daca se primeste un pachet ICMP cu TTL mai mic sau egal cu 0, se trimite un pachet
+	de Timeout
+
