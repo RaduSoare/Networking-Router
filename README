@@ -1,10 +1,4 @@
 
-Soare Radu-Georgian
-323CD
-Tema1 - PC
-
-
-	
 I. Routerul verifica daca pachetul este de tip IP sau tip ARP
 	1. Daca pachetul este de tip ARP, se verifica daca este un request sau un reply
 		- Daca s-a primit un request, inseamna ca un host are nevoie sa trimita un pachet si
